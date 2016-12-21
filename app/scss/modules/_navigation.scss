@@ -1,0 +1,67 @@
+.sidenav {
+    flex: 0;
+    min-width: 240px;
+    background: #433d3c;
+    transition: min-width 0.2s;
+    @include tablet {
+        min-width: 56px;
+    }
+    .navigation {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        li {
+            &.active {
+                background-color: rgba(40,40,40,0.4);
+                a {
+                    color: white;
+                }
+            }
+
+            a {
+                height: 50px;
+                display: block;
+                font-size: 13px;
+                line-height: 20px;
+                padding: 10px 20px;
+                text-decoration: none;
+                color: #a19796;
+                white-space: nowrap;
+                transition: all 0.1s;
+                &:hover {
+                    color: #fff;
+                }
+                i.fa {
+                    display: inline-block;
+                    margin-right: 10px;
+                    line-height: 30px;
+                    height: 20px;
+                    width: 20px;
+                    text-align: center;
+                    font-size: 16px;
+                    @include tablet {
+                        font-size: 20px;
+                    }
+                }
+                @include tablet {
+                    .text {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}
+.collapsed {
+    .sidenav {
+        min-width: 56px;
+        .navigation {
+            i.fa {
+                font-size: 20px;
+            }
+            .text {
+                display: none;
+            }
+        }
+    }
+}

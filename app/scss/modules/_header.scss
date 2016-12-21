@@ -1,0 +1,21 @@
+.header {
+    background: #FFF;
+    padding-top: 9px;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.04);
+
+    .logo {
+        position: relative;
+        display: block;
+        margin-bottom: 9px;
+        margin-left: 25px;
+        background-image: url("logo.png");
+        width: 195px;
+        height: 43px;
+    }
+
+    .border {
+        background-image: url("menu_slice.png");
+        background-repeat: repeat-x;
+        height: 15px;
+    }
+}

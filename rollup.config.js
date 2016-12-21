@@ -22,7 +22,7 @@ const env = process.env.NODE_ENV || 'production';
 
 export default {
 	entry: 'app/js/index.js',
-	dest: 'dist/bundle.js',
+	dest: 'dist/index_files/bundle.js',
 	format: 'iife',
 	sourceMap: true,
 	plugins: [

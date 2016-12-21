@@ -1,7 +1,11 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
-import Header from '../components/Header.react';
-import Footer from '../components/Footer.react';
+import { name } from 'config';
+
+import Header from '../components/Header';
+import SubHeader from '../components/SubHeader';
+import Content from '../components/Content';
+import Footer from '../components/Footer';
 
 export default class Main extends Component {
 
@@ -9,7 +13,8 @@ export default class Main extends Component {
     return (
       <div>
         <Header />
-        {this.props.children}
+        <SubHeader name={name} />
+        <Content page={this.props.children}/>
         <Footer />
       </div>
     );

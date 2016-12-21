@@ -1133,7 +1133,7 @@ function patchComponent(lastVNode, nextVNode, parentDom, lifecycle, context, isS
                     var subLifecycle = instance._lifecycle;
                     lifecycle.fastUnmount = subLifecycle.fastUnmount;
                     patch(lastInput$1, nextInput$1, parentDom, lifecycle, childContext, isSVG, isRecycling);
-                    subLifecycle.fastUnmount = lifecycle.unmount;
+                    subLifecycle.fastUnmount = lifecycle.fastUnmount;
                     lifecycle.fastUnmount = fastUnmount;
                     instance.componentDidUpdate(lastProps, lastState);
                     findDOMNodeEnabled && componentToDOMNodeMap.set(instance, nextInput$1.dom);
@@ -2309,11 +2309,13 @@ function getRoot(dom) {
     return null;
 }
 function setRoot(dom, input, lifecycle) {
-    roots.push({
+    var root = {
         dom: dom,
         input: input,
         lifecycle: lifecycle
-    });
+    };
+    roots.push(root);
+    return root;
 }
 function removeRoot(root) {
     for (var i = 0; i < roots.length; i++) {
@@ -2342,7 +2344,7 @@ function render(input, parentDom) {
                 mount(input, parentDom, lifecycle, {}, false);
             }
             lifecycle.trigger();
-            setRoot(parentDom, input, lifecycle);
+            root = setRoot(parentDom, input, lifecycle);
         }
     }
     else {
@@ -2364,6 +2366,12 @@ function render(input, parentDom) {
     if (devToolsStatus.connected) {
         sendRoots(window);
     }
+    if (root) {
+        var rootInput = root.input;
+        if (rootInput && (rootInput.flags & 28 /* Component */)) {
+            return rootInput.children;
+        }
+    }
 }
 function createRenderer(_parentDom) {
     var parentDom = _parentDom || null;
@@ -2380,7 +2388,7 @@ function linkEvent(data, event) {
 }
 
 if (isBrowser) {
-	window.process = window.process || {}; 
+	window.process = window.process || {};
 	window.process.env = window.process.env || {
 		NODE_ENV: 'development'
 	};
@@ -2399,7 +2407,7 @@ var index = {
 	NO_OP: NO_OP,
 	EMPTY_OBJ: EMPTY_OBJ,
 
-	//DOM
+	// DOM
 	render: render,
 	findDOMNode: findDOMNode,
 	createRenderer: createRenderer,
@@ -3388,7 +3396,7 @@ var infernoComponent = createCommonjsModule(function (module, exports) {
 }(commonjsGlobal, (function (inferno) { 'use strict';
 
 var ERROR_MSG = 'a runtime error occured! Use Inferno in development environment to find the error.';
-
+var isBrowser = typeof window !== 'undefined' && window.document;
 
 // this is MUCH faster than .constructor === Array and instanceof Array
 // in Node 7 and the later versions of V8, slower in older versions though
@@ -3483,7 +3491,7 @@ function queueStateChanges(component, newState, callback) {
     for (var stateKey in newState) {
         component._pendingState[stateKey] = newState[stateKey];
     }
-    if (!component._pendingSetState) {
+    if (!component._pendingSetState && isBrowser) {
         if (component._processingSetState || callback) {
             addToQueue(component, false, callback);
         }
@@ -3587,7 +3595,7 @@ Component$1.prototype.forceUpdate = function forceUpdate (callback) {
     if (this._unmounted) {
         return;
     }
-    applyState(this, true, callback);
+    isBrowser && applyState(this, true, callback);
 };
 Component$1.prototype.setState = function setState (newState, callback) {
     if (this._unmounted) {
@@ -4392,17 +4400,20 @@ function matchRoutes(_routes, currentURL, parentPath) {
         var isLast = !route.props || isEmpty(route.props.children);
         var matchBase = matchPath(isLast, location, pathToMatch);
         if (matchBase) {
+            var children = null;
             if (route.props && route.props.children) {
                 var matchChild = matchRoutes(route.props.children, pathToMatch, location);
-                route.props.children = null;
                 if (matchChild) {
-                    route.props.children = matchChild.matched;
+                    children = matchChild.matched;
                     Object.assign(params, matchChild.matched.props.params);
+                }
+                else {
+                    route.props.children = null;
                 }
             }
             var matched = Inferno.cloneVNode(route, {
                 params: Object.assign(params, matchBase.params)
-            });
+            }, children);
             return {
                 location: location,
                 matched: matched
@@ -4559,6 +4570,8 @@ var Link = infernoRouter.Link;
 
 var infernoComponent$2 = infernoComponent;
 
+var name$1 = 'Settings';
+
 var classCallCheck = function (instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -4687,13 +4700,115 @@ var Header = function (_Component) {
     value: function render() {
       return createVNode$2(2, 'div', {
         'className': 'header'
-      }, 'Header.');
+      }, [createVNode$2(2, 'a', {
+        'className': 'logo',
+        'title': 'onemedia logo'
+      }), createVNode$2(2, 'div', {
+        'className': 'border'
+      }, '\xA0')]);
     }
   }]);
   return Header;
 }(infernoComponent$2);
 
 var createVNode$3 = inferno.createVNode;
+
+var Header$2 = function (_Component) {
+  inherits(Header, _Component);
+
+  function Header() {
+    classCallCheck(this, Header);
+    return possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
+  }
+
+  createClass(Header, [{
+    key: 'toggleMenu',
+    value: function toggleMenu() {
+      document.body.classList.toggle('collapsed');
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var name = this.props.name;
+
+
+      return createVNode$3(2, 'section', {
+        'className': 'subheader'
+      }, [createVNode$3(2, 'button', {
+        'type': 'button',
+        'id': 'main-menu-toggle'
+      }, createVNode$3(2, 'i', {
+        'className': 'navbar-icon fa fa-bars icon'
+      }), {
+        'onClick': this.toggleMenu
+      }), createVNode$3(2, 'div', {
+        'className': 'content'
+      }, [createVNode$3(2, 'div', {
+        'className': 'title'
+      }, createVNode$3(2, 'strong', null, name)), createVNode$3(2, 'div', null, createVNode$3(2, 'button', {
+        'className': 'btn btn-success publish'
+      }, 'Publish REPLACE Channel'))])]);
+    }
+  }]);
+  return Header;
+}(infernoComponent$2);
+
+var createVNode$5 = inferno.createVNode;
+
+var Navigation = function (_Component) {
+  inherits(Navigation, _Component);
+
+  function Navigation() {
+    classCallCheck(this, Navigation);
+    return possibleConstructorReturn(this, (Navigation.__proto__ || Object.getPrototypeOf(Navigation)).apply(this, arguments));
+  }
+
+  createClass(Navigation, [{
+    key: 'render',
+    value: function render() {
+      return createVNode$5(2, 'nav', {
+        'className': 'sidenav'
+      }, createVNode$5(2, 'ul', {
+        'className': 'navigation'
+      }, [createVNode$5(2, 'li', null, createVNode$5(16, Link, {
+        'activeClassName': 'active',
+        'to': '/',
+        children: 'General'
+      })), createVNode$5(2, 'li', null, createVNode$5(16, Link, {
+        'activeClassName': 'active',
+        'to': '/backup',
+        children: 'Backup / Restore'
+      }))]));
+    }
+  }]);
+  return Navigation;
+}(infernoComponent$2);
+
+var createVNode$4 = inferno.createVNode;
+
+var Content = function (_Component) {
+  inherits(Content, _Component);
+
+  function Content() {
+    classCallCheck(this, Content);
+    return possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).apply(this, arguments));
+  }
+
+  createClass(Content, [{
+    key: 'render',
+    value: function render() {
+      var page = this.props.page;
+
+
+      return createVNode$4(2, 'main', {
+        'className': 'content'
+      }, [createVNode$4(16, Navigation), page]);
+    }
+  }]);
+  return Content;
+}(infernoComponent$2);
+
+var createVNode$6 = inferno.createVNode;
 
 var Footer = function (_Component) {
   inherits(Footer, _Component);
@@ -4706,7 +4821,7 @@ var Footer = function (_Component) {
   createClass(Footer, [{
     key: 'render',
     value: function render() {
-      return createVNode$3(2, 'div', {
+      return createVNode$6(2, 'div', {
         'className': 'footer'
       }, 'Footer.');
     }
@@ -4727,13 +4842,17 @@ var Main = function (_Component) {
   createClass(Main, [{
     key: 'render',
     value: function render() {
-      return createVNode$1(2, 'div', null, [createVNode$1(16, Header), this.props.children, createVNode$1(16, Footer)]);
+      return createVNode$1(2, 'div', null, [createVNode$1(16, Header), createVNode$1(16, Header$2, {
+        'name': name$1
+      }), createVNode$1(16, Content, {
+        'page': this.props.children
+      }), createVNode$1(16, Footer)]);
     }
   }]);
   return Main;
 }(infernoComponent$2);
 
-var createVNode$4 = inferno.createVNode;
+var createVNode$7 = inferno.createVNode;
 
 var General = function (_Component) {
   inherits(General, _Component);
@@ -4746,19 +4865,13 @@ var General = function (_Component) {
   createClass(General, [{
     key: 'render',
     value: function render() {
-      return createVNode$4(2, 'div', null, [createVNode$4(2, 'h1', null, 'General Page'), createVNode$4(2, 'ul', null, [createVNode$4(2, 'li', null, createVNode$4(16, Link, {
-        'to': '',
-        children: 'General'
-      })), createVNode$4(2, 'li', null, createVNode$4(16, Link, {
-        'to': 'backup',
-        children: 'Backup / Restore'
-      }))])]);
+      return createVNode$7(2, 'div', null, createVNode$7(2, 'h1', null, 'General Page'));
     }
   }]);
   return General;
 }(infernoComponent$2);
 
-var createVNode$5 = inferno.createVNode;
+var createVNode$8 = inferno.createVNode;
 
 var BackupRestore = function (_Component) {
   inherits(BackupRestore, _Component);
@@ -4771,13 +4884,13 @@ var BackupRestore = function (_Component) {
   createClass(BackupRestore, [{
     key: 'render',
     value: function render() {
-      return createVNode$5(2, 'div', null, 'BackupRestore Page');
+      return createVNode$8(2, 'div', null, 'BackupRestore Page');
     }
   }]);
   return BackupRestore;
 }(infernoComponent$2);
 
-var createVNode$6 = inferno.createVNode;
+var createVNode$9 = inferno.createVNode;
 
 var Missing = function (_Component) {
   inherits(Missing, _Component);
@@ -4790,7 +4903,7 @@ var Missing = function (_Component) {
   createClass(Missing, [{
     key: 'render',
     value: function render() {
-      return createVNode$6(2, 'div', null, 'Missing Page');
+      return createVNode$9(2, 'div', null, 'Missing Page');
     }
   }]);
   return Missing;
