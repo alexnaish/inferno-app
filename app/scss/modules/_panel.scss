@@ -1,0 +1,18 @@
+.panel {
+    background: #fff;
+    margin: 0;
+    border-color: #d6d6d6;
+
+    .panel-heading {
+        display: flex;
+        justify-content: space-between;
+        background: #fafafa;
+        border-bottom: 2px solid #ececec;
+        padding: 10px 20px;
+        position: relative;
+        font-weight: bold;
+        color: #555;
+        font-size: 14px;
+        line-height: 30px;
+    }
+}

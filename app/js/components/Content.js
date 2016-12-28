@@ -8,11 +8,12 @@ export default class Content extends Component {
 
   render() {
     const { page } = this.props;
-
     return (
       <main className="content">
         <Navigation />
-        {page}
+        <section className="main">
+          {page}
+        </section>
       </main>
     );
   }

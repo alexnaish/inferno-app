@@ -5,7 +5,10 @@ export default class BackupRestore extends Component {
 
   render() {
     return (
-      <div>BackupRestore Page</div>
+      <div className="panel">
+        <div className="panel-heading">Backup and Restore</div>
+        <div className="panel-body">Content Here</div>
+      </div>
     )
   }
 

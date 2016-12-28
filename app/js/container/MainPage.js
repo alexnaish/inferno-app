@@ -11,7 +11,7 @@ export default class Main extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <Header />
         <SubHeader name={name} />
         <Content page={this.props.children}/>

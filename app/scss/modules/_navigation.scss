@@ -6,31 +6,35 @@
     @include tablet {
         min-width: 56px;
     }
+
     .navigation {
         list-style: none;
         margin: 0;
         padding: 0;
+
         li {
-            &.active {
+            border-bottom: 1px solid #444;
+
+            a.active {
                 background-color: rgba(40,40,40,0.4);
-                a {
-                    color: white;
-                }
+                color: white;
             }
 
             a {
                 height: 50px;
                 display: block;
                 font-size: 13px;
-                line-height: 20px;
-                padding: 10px 20px;
+                line-height: 30px;
+                padding: 10px 15px;
                 text-decoration: none;
                 color: #a19796;
                 white-space: nowrap;
                 transition: all 0.1s;
+
                 &:hover {
                     color: #fff;
                 }
+
                 i.fa {
                     display: inline-block;
                     margin-right: 10px;
@@ -52,13 +56,16 @@
         }
     }
 }
+
 .collapsed {
     .sidenav {
         min-width: 56px;
+
         .navigation {
             i.fa {
                 font-size: 20px;
             }
+
             .text {
                 display: none;
             }

@@ -1,0 +1,73 @@
+input[type="password"],
+input[type="text"],
+select {
+    display: block;
+    width: 100%;
+    min-width: 60px;
+    height: 32px;
+    padding: 6px 12px;
+    font-size: 13px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #d6d6d6;
+    border-radius: 2px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;
+    &:focus {
+        border-color: #7a6f6f;
+        outline: 0;
+    }
+    &.ng-invalid {
+        border-color: #f66f6f;
+    }
+}
+input[type="color"] + input[type="text"] {
+    width: calc(100% - 45px);
+}
+input[type="color"] {
+    float: left;
+    width: 45px;
+    height: 32px;
+}
+input[type=checkbox] {
+    display: none;
+}
+input[type=checkbox] + label {
+    line-height: 30px;
+    padding-left: 10px;
+    &:before {
+        font-family: FontAwesome;
+        display: inline-block;
+    }
+}
+input[type=checkbox] + label:before {
+    content: "\f096";
+}
+input[type=checkbox] + label:before {
+    letter-spacing: 10px;
+}
+input[type=checkbox]:checked + label:before {
+    content: "\f046";
+}
+input[type=checkbox]:checked + label:before {
+    letter-spacing: 10px;
+}
+input[type=file] {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+    & + label {
+        cursor: pointer;
+        font-size: 13px;
+        color: white;
+        background-color: #7a6f6f;
+        display: inline-block;
+    }
+}

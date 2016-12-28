@@ -54,7 +54,7 @@ export default {
 				// 'node_modules/object-assign/**',
 			],
 			namedExports: {
-				'node_modules/inferno-router/inferno-router.js': ['Router', 'Route', 'Link']
+				'node_modules/inferno-router/inferno-router.js': ['Router', 'Route', 'Link', 'IndexRoute']
 			}
 		}),
 		replace({

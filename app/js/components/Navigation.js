@@ -1,6 +1,7 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
-import { Link } from 'inferno-router';
+
+import NavigationLink from './NavigationLink';
 
 export default class Navigation extends Component {
 
@@ -8,8 +9,8 @@ export default class Navigation extends Component {
     return (
       <nav className="sidenav">
         <ul className="navigation">
-          <li><Link activeClassName="active" to="/">General</Link></li>
-          <li><Link activeClassName="active" to="/backup">Backup / Restore</Link></li>
+          <NavigationLink text="General" linkTo="/" icon="fa-cogs" />
+          <NavigationLink text="Backup & Restore" linkTo="/backup" icon="fa-floppy-o" />
         </ul>
       </nav>
     );

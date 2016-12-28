@@ -1,6 +1,6 @@
 import Inferno from 'inferno';
 import createHashHistory from 'history/createHashHistory';
-import { Router, Route } from 'inferno-router';
+import { Router, Route, IndexRoute } from 'inferno-router';
 
 import MainPage from './container/MainPage';
 import General from './pages/General';
@@ -13,7 +13,7 @@ const history = createHashHistory();
 const routes = (
   <Router history={history}>
     <Route component={MainPage}>
-      <Route path="/" component={General} />
+      <IndexRoute component={General} />
       <Route path="/backup" component={BackupRestore} />
       <Route path="*" component={Missing} />
     </Route>

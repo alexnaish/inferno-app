@@ -58,8 +58,7 @@
                 right: 16px;
                 top: 0;
                 @include tablet {
-                    content: "\f0da";
-                    right: -8px;
+                    display: none;
                 }
             }
         }
