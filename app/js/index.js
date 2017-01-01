@@ -1,23 +1,24 @@
 import Inferno from 'inferno';
-import createHashHistory from 'history/createHashHistory';
-import { Router, Route, IndexRoute } from 'inferno-router';
+import { Provider } from 'inferno-redux';
+import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk'
 
-import MainPage from './container/MainPage';
-import General from './pages/General';
-import BackupRestore from './pages/BackupRestore';
+import reducers from './reducers';
+import logReporter from './middleware/logger';
+import App from './app';
 
-import Missing from './pages/Missing';
+const middleware = [
+	thunk,
+	logReporter
+];
 
-const history = createHashHistory();
-
-const routes = (
-  <Router history={history}>
-    <Route component={MainPage}>
-      <IndexRoute component={General} />
-      <Route path="/backup" component={BackupRestore} />
-      <Route path="*" component={Missing} />
-    </Route>
-  </Router>
+const store = createStore(
+  reducers,
+  compose(applyMiddleware(...middleware))
 );
 
-Inferno.render(routes, document.getElementById('app'));
+Inferno.render((
+  <Provider store={store}>
+    <App />
+  </Provider>
+), document.getElementById('app'));
